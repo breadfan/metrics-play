@@ -2,11 +2,10 @@
 
 This module provides some support for @codahale [Metrics](https://dropwizard.github.io/metrics/3.1.0/) library in a Play2 application (Scala)
 
-[![Build Status](https://travis-ci.org/kenshoo/metrics-play.png)](https://travis-ci.org/kenshoo/metrics-play)
+[![Build Status](https://travis-ci.org/AutoScout24/metrics-play.svg)](https://travis-ci.org/AutoScout24/metrics-play)
+[![codecov.io](http://codecov.io/github/AutoScout24/metrics-play/coverage.svg?branch=master)](http://codecov.io/github/AutoScout24/metrics-play?branch=master)
 
-[![codecov.io](http://codecov.io/github/kenshoo/metrics-play/coverage.svg?branch=master)](http://codecov.io/github/kenshoo/metrics-play?branch=master)
-
-Play Version: 2.4.0, Metrics Version: 3.1.1, Scala Versions: 2.11.6, 2.10.4
+Play Version: 2.5.4 Metrics Version: 3.1.1, Scala Versions: 2.11.8, 2.10.4
 
 ## Features
 

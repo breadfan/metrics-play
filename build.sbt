@@ -1,12 +1,14 @@
-organization:= "com.kenshoo"
+import scala.util.Properties
+
+organization:= "com.autoscout24"
 
 name := "metrics-play"
 
-version := "2.5.0_0.5.0-play-2.5-fix"
+version in ThisBuild := "2.5." + Properties.envOrElse("TRAVIS_BUILD_NUMBER", "0-SNAPSHOT")
 
-scalaVersion := "2.11.6"
+scalaVersion := "2.11.8"
 
-crossScalaVersions := Seq("2.10.4", "2.11.6")
+crossScalaVersions := Seq("2.10.4", "2.11.8")
 
 testOptions in Test += Tests.Argument("junitxml", "console")
 
@@ -22,8 +24,8 @@ libraryDependencies ++= Seq(
     "com.typesafe.play" %% "play" % "2.5.3" % "provided",
     "org.joda" % "joda-convert" % "1.2",
     //test
-    "com.typesafe.play" %% "play-test" % "2.5.3" % "test",
-    "com.typesafe.play" %% "play-specs2" % "2.5.3" % "test",
+    "com.typesafe.play" %% "play-test" % "2.5.4" % "test",
+    "com.typesafe.play" %% "play-specs2" % "2.5.4" % "test",
     "org.specs2" %% "specs2" % "2.3.12" % "test"
 )
 

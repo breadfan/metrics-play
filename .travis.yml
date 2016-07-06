@@ -10,4 +10,7 @@ script:
 before_install:
   - pip install --user codecov
 after_success:
-  - codecov
+  - >
+    codecov &&
+    sh "$TRAVIS_BUILD_DIR/travis-ci-bintray-credentials.sh" &&
+    sbt publish
