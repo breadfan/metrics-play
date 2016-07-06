@@ -1,6 +1,6 @@
 import scala.util.Properties
 
-organization:= "com.autoscout24"
+organization:= "de.threedimensions"
 
 name := "metrics-play"
 
