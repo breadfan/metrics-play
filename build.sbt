@@ -1,4 +1,6 @@
 import scala.util.Properties
+import bintray.AttrMap
+import bintray._
 
 organization:= "de.threedimensions"
 
@@ -29,7 +31,7 @@ libraryDependencies ++= Seq(
     "org.specs2" %% "specs2" % "2.3.12" % "test"
 )
 
-publishMavenStyle := true
+publishMavenStyle := false
 
 publishTo <<= version { (v: String) =>
   val nexus = "https://oss.sonatype.org/"
@@ -39,32 +41,10 @@ publishTo <<= version { (v: String) =>
     Some("releases" at nexus + "service/local/staging/deploy/maven2")
 }
 
-pomIncludeRepository := { _ => false }
+bintrayPublishSettings
+
+bintray.Keys.repository in bintray.Keys.bintray := "sbt-plugins"
+
+bintray.Keys.bintrayOrganization in bintray.Keys.bintray := None
 
 publishArtifact in Test := false
-
-pomExtra := (
-  <url>https://github.com/kenshoo/metrics-play</url>
-  <inceptionYear>2013</inceptionYear>
-  <licenses>
-    <license>
-      <name>Apache 2</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-      <distribution>repo</distribution>
-      <comments>A business-friendly OSS license</comments>
-    </license>
-  </licenses>
-  <scm>
-    <url>git@github.com:kenshoo/metrics-play.git</url>
-    <connection>scm:git@github.com:kenshoo/metrics-play.git</connection>
-  </scm>
-  <developers>
-    <developer>
-      <name>Lior Harel</name>
-      <email>harel.lior@gmail.com</email>
-      <roles>
-        <role>Author</role>
-      </roles>
-      <organization>Kenshoo</organization>
-    </developer>
-  </developers>)
