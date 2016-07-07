@@ -1,5 +1,4 @@
 import scala.util.Properties
-import bintray.AttrMap
 import bintray._
 
 organization:= "de.threedimensions"
@@ -30,19 +29,5 @@ libraryDependencies ++= Seq(
 )
 
 publishMavenStyle := false
-
-publishTo <<= version { (v: String) =>
-  val nexus = "https://oss.sonatype.org/"
-  if (v.trim.endsWith("SNAPSHOT"))
-    Some("snapshots" at nexus + "content/repositories/snapshots")
-  else
-    Some("releases" at nexus + "service/local/staging/deploy/maven2")
-}
-
-bintrayPublishSettings
-
-bintray.Keys.repository in bintray.Keys.bintray := "sbt-plugins"
-
-bintray.Keys.bintrayOrganization in bintray.Keys.bintray := None
 
 publishArtifact in Test := false
