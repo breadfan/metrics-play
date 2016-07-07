@@ -4,13 +4,14 @@ scala:
   - 2.10.4
 jdk:
   - oraclejdk8
-script:
-  - sbt clean coverage test
 
-before_install:
-  - pip install --user codecov
+script:
+- sbt clean coverage test package
+# Trick to avoid unnecessary cache updates
+- find $HOME/.sbt -name "*.lock" | xargs rm
+
 after_success:
   - >
-    codecov &&
-    sh "$TRAVIS_BUILD_DIR/travis-ci-bintray-credentials.sh" &&
-    sbt publish
+      sbt coveralls &&
+      sh "$TRAVIS_BUILD_DIR/travis-ci-bintray-credentials.sh" &&
+      sbt publish
