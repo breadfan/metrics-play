@@ -5,7 +5,7 @@ This module provides some support for @codahale [Metrics](https://dropwizard.git
 [![Build Status](https://travis-ci.org/AutoScout24/metrics-play.svg)](https://travis-ci.org/AutoScout24/metrics-play)
 [![codecov.io](http://codecov.io/github/AutoScout24/metrics-play/coverage.svg?branch=master)](http://codecov.io/github/AutoScout24/metrics-play?branch=master)
 
-Play Version: 2.5.4 Metrics Version: 3.1.1, Scala Versions: 2.11.8, 2.10.4
+Play Version: 2.5.4 Metrics Version: 3.1.2, Scala Versions: 2.11.8, 2.10.4
 
 ## Features
 

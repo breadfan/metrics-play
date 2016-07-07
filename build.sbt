@@ -10,8 +10,6 @@ version in ThisBuild := "2.5." + Properties.envOrElse("TRAVIS_BUILD_NUMBER", "0-
 
 scalaVersion := "2.11.8"
 
-crossScalaVersions := Seq("2.10.4", "2.11.8")
-
 testOptions in Test += Tests.Argument("junitxml", "console")
 
 resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
