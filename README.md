@@ -1,9 +1,9 @@
 # metrics-play
 
-This module provides some support for @codahale [Metrics](https://dropwizard.github.io/metrics/3.1.0/) library in a Play2 application (Scala)
+This module provides some support for @codahale [Metrics](https://dropwizard.github.io/metrics/3.1.2/) library in a Play2 application (Scala)
 
-[![Build Status](https://travis-ci.org/AutoScout24/metrics-play.svg)](https://travis-ci.org/breadfan/metrics-play)
-[![codecov.io](http://codecov.io/github/AutoScout24/metrics-play/coverage.svg?branch=master)](http://codecov.io/github/AutoScout24/metrics-play?branch=master)
+[![Build Status](https://travis-ci.org/breadfan/metrics-play.svg)](https://travis-ci.org/breadfan/metrics-play)
+[![codecov.io](http://codecov.io/github/breadfan/metrics-play/coverage.svg?branch=master)](http://codecov.io/github/AutoScout24/metrics-play?branch=master)
 [![Download](https://api.bintray.com/packages/breadfan/maven/metrics-play/images/download.svg) ](https://bintray.com/breadfan/maven/metrics-play/_latestVersion)
 
 Play Version: 2.5.4 Metrics Version: 3.1.2, Scala Version: 2.11.8
