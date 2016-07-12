@@ -1,14 +1,24 @@
 language: scala
+
+cache:
+  directories:
+  - "$HOME/.m2/repository"
+  - "$HOME/.sbt"
+  - "$HOME/.ivy2"
+
 scala:
-- 2.11.8
-- 2.10.4
+  - 2.11.8
+
 jdk:
 - oraclejdk8
+
 script:
 - sbt clean coverage test package
 - find $HOME/.sbt -name "*.lock" | xargs rm
+
 after_success:
 - sh "$TRAVIS_BUILD_DIR/travis-ci-bintray-credentials.sh" && sbt publish
+
 env:
   global:
   - secure: y8pa2DFpsV1aTWUIYJLGHQRUbhR5JcqT42llfRPRYucIPCLgj1ftOqX7UkqXD2alVonbUX42A+yQnTkjf+P1vA7FzsbzdJaDXQ+TCJ2bCVep+dI65EgWkxaXjIqT2WLp29fp2XQIctApTHo0Y7kMlTwIPCLOWSPvPQijLHpcJKbCbhEkAU+Wo00aaIEU7hZwRRVGn404BOD58oX+siodjMubKj9nXraxs50XhdXF8Ha3uFMGEPpQCNF/7Rl9/v49tYHtsg2zZcdP73qaBWHZRYreR8y+c9U9HmJMh9CYHDFw2D/K2YFTraSmP4k0CsFBfLgXhm09vKpbs+3Cn3a0j9BN92ROB/eobKOUlS14ha++e305rKdel0r0QlnLKduUZcyE3oSxbEtA9BdHF/eEpjOT2Gp2rXazmABoauIi+Y3gf/ZpnwOFT8flE7N4lGoOmqG1eG+sh5wvK+OF92D1A3rFkfuE8eyrqBOrqdC3CcY1qBXVdtf1Dp2JEDiMlvJI/cvrSHC/VSj59RrI2u9hieRWJheGTPe+EQti6l82/a4vugjZf004BaMAaE9hgJKGf3/ysQpAjiq2+ELSou47MrhubCOmrxoGUNVNKZZQX9IIRtD4BaXiFFv3+PPAQgZeq4XtTIDKjWcoiJto+CKHsZGZ2aXz1zB7RxeLhOD5HBw=
