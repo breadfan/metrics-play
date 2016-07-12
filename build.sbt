@@ -29,3 +29,5 @@ libraryDependencies ++= Seq(
     "com.typesafe.play" %% "play-specs2" % playVersion % "test",
     "org.specs2" %% "specs2" % "2.3.12" % "test"
 )
+
+publishMavenStyle := false
