@@ -2,12 +2,14 @@ import scala.util.Properties
 import bintray._
 
 organization:= "de.threedimensions"
-
 name := "metrics-play"
+licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
 
 version in ThisBuild := "2.5." + Properties.envOrElse("TRAVIS_BUILD_NUMBER", "0-SNAPSHOT")
 
 scalaVersion := "2.11.8"
+
+val playVersion = "2.5.4"
 
 testOptions in Test += Tests.Argument("junitxml", "console")
 
@@ -23,11 +25,7 @@ libraryDependencies ++= Seq(
     "com.typesafe.play" %% "play" % "2.5.3" % "provided",
     "org.joda" % "joda-convert" % "1.2",
     //test
-    "com.typesafe.play" %% "play-test" % "2.5.4" % "test",
-    "com.typesafe.play" %% "play-specs2" % "2.5.4" % "test",
+    "com.typesafe.play" %% "play-test" % playVersion % "test",
+    "com.typesafe.play" %% "play-specs2" % playVersion % "test",
     "org.specs2" %% "specs2" % "2.3.12" % "test"
 )
-
-publishMavenStyle := false
-
-publishArtifact in Test := false
