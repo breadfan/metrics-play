@@ -16,6 +16,7 @@
 package com.kenshoo.play.metrics
 
 import org.specs2.mutable.Specification
+import play.api.mvc.ControllerHelpers
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 
@@ -28,6 +29,7 @@ class MetricsControllerSpec extends Specification {
         def defaultRegistry = throw new NotImplementedError
         def toJson = "{}"
       })
+      controller.setControllerComponents(stubControllerComponents())
 
       val result = controller.metrics.apply(FakeRequest())
       contentAsString(result) must equalTo("{}")
@@ -38,6 +40,7 @@ class MetricsControllerSpec extends Specification {
     "return 500 if metrics module is disabled" in {
 
       val controller = new MetricsController(new DisabledMetrics())
+      controller.setControllerComponents(stubControllerComponents())
 
       val result = controller.metrics.apply(FakeRequest())
 

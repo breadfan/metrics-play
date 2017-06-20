@@ -10,6 +10,8 @@ import scala.collection.JavaConverters._
 
 class MetricsSpec extends Specification {
 
+  isolated
+
   def withApplication[T](conf: Map[String, Any])(block: Application ⇒ T): T = {
 
     lazy val application = new GuiceApplicationBuilder()
@@ -34,7 +36,7 @@ class MetricsSpec extends Specification {
       metrics.defaultRegistry.counter("my-counter").inc()
 
       val jsValue: JsValue = Json.parse(metrics.toJson)
-      (jsValue \ "counters" \ "my-counter" \ "count").as[Int] mustEqual(1)
+      (jsValue \ "counters" \ "my-counter" \ "count").as[Int] mustEqual 1
     }
 
     "contain JVM metrics" in withApplication(Map.empty) { implicit app ⇒
@@ -46,11 +48,11 @@ class MetricsSpec extends Specification {
     }
 
     "be able to turn off JVM metrics" in withApplication(Map("metrics.jvm" → false)) { implicit app ⇒
-      metrics.defaultRegistry.getGauges.asScala must not haveKey("jvm.attribute.name")
+      metrics.defaultRegistry.getGauges.asScala must not haveKey "jvm.attribute.name"
     }
 
     "be able to turn off logback metrics" in withApplication(Map("metrics.jvm" → "false", "metrics.logback" → false)) { implicit app ⇒
-      metrics.defaultRegistry.getMeters.asScala must not haveKey("ch.qos.logback.core.Appender.all")
+      metrics.defaultRegistry.getMeters.asScala must not haveKey "ch.qos.logback.core.Appender.all"
     }
   }
 }
