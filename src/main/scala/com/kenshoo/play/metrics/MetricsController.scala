@@ -18,9 +18,9 @@ package com.kenshoo.play.metrics
 import javax.inject.Inject
 
 import play.api.http.ContentTypes
-import play.api.mvc.{Action, Controller, Headers}
+import play.api.mvc.InjectedController
 
-class MetricsController @Inject() (met: Metrics) extends Controller with ContentTypes {
+class MetricsController @Inject()(met: Metrics) extends InjectedController with ContentTypes {
 
   def metrics = Action {
     try {
