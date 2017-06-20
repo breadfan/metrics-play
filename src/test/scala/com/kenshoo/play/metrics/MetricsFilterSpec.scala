@@ -39,12 +39,12 @@ object MetricsFilterSpec extends Specification {
     def filters = Seq(metricsFilter)
   }
 
-  def withApplication[T](result: => Result)(block: Application => T): T = {
+  def withApplication[T](result: ⇒ Result)(block: Application ⇒ T): T = {
 
     lazy val application = new GuiceApplicationBuilder()
       .overrides(
         bind[Router].to(Router.from {
-          case _ => Action(result)
+          case _ ⇒ Action(result)
         }),
         bind[HttpFilters].to[Filters],
         bind[MetricsFilter].to[MetricsFilterImpl],
@@ -60,25 +60,25 @@ object MetricsFilterSpec extends Specification {
 
   "MetricsFilter" should {
 
-    "return passed response code" in withApplication(Ok("")) { _ =>
-      val result = route(FakeRequest()).get
+    "return passed response code" in withApplication(Ok("")) { implicit app ⇒
+      val result = route(app, FakeRequest()).get
       status(result) must equalTo(OK)
     }
 
-    "increment status code counter" in withApplication(Ok("")) { implicit app =>
-      Await.ready(route(FakeRequest()).get, Duration(2, "seconds"))
+    "increment status code counter" in withApplication(Ok("")) { implicit app ⇒
+      Await.ready(route(app, FakeRequest()).get, Duration(2, "seconds"))
       val meter = metrics.defaultRegistry.meter(MetricRegistry.name(labelPrefix, "200"))
       meter.getCount must equalTo(1)
     }
 
-    "increment status code counter for uncaught exceptions" in withApplication(throw new RuntimeException("")) { implicit app =>
-      Await.ready(route(FakeRequest()).get, Duration(2, "seconds"))
+    "increment status code counter for uncaught exceptions" in withApplication(throw new RuntimeException("")) { implicit app ⇒
+      Await.ready(route(app, FakeRequest()).get, Duration(2, "seconds"))
       val meter = metrics.defaultRegistry.meter(MetricRegistry.name(labelPrefix, "500"))
       meter.getCount must equalTo(1)
     }
 
-    "increment request timer" in withApplication(Ok("")) { implicit app =>
-      Await.ready(route(FakeRequest()).get, Duration(2, "seconds"))
+    "increment request timer" in withApplication(Ok("")) { implicit app ⇒
+      Await.ready(route(app, FakeRequest()).get, Duration(2, "seconds"))
       val timer = metrics.defaultRegistry.timer(MetricRegistry.name(labelPrefix, "requestTimer"))
       timer.getCount must beGreaterThan(0L)
     }

@@ -6,12 +6,13 @@ import javax.inject.{Inject, Singleton}
 
 import ch.qos.logback.classic
 import com.codahale.metrics.json.MetricsModule
-import com.codahale.metrics.jvm.{ThreadStatesGaugeSet, MemoryUsageGaugeSet, GarbageCollectorMetricSet}
+import com.codahale.metrics.jvm.{GarbageCollectorMetricSet, MemoryUsageGaugeSet, ThreadStatesGaugeSet}
 import com.codahale.metrics.logback.InstrumentedAppender
-import com.codahale.metrics.{JvmAttributeGaugeSet, SharedMetricRegistries, MetricRegistry}
-import com.fasterxml.jackson.databind.{ObjectWriter, ObjectMapper}
-import play.api.{Logger, Configuration}
+import com.codahale.metrics.{JvmAttributeGaugeSet, MetricRegistry, SharedMetricRegistries}
+import com.fasterxml.jackson.databind.{ObjectMapper, ObjectWriter}
+import com.typesafe.config.ConfigFactory
 import play.api.inject.ApplicationLifecycle
+import play.api.{Configuration, Environment, Logger}
 
 import scala.concurrent.Future
 
@@ -24,16 +25,17 @@ trait Metrics {
 }
 
 @Singleton
-class MetricsImpl @Inject() (lifecycle: ApplicationLifecycle, configuration: Configuration) extends Metrics {
+class MetricsImpl @Inject()(lifecycle: ApplicationLifecycle, injectedConf: Configuration, env: Environment) extends Metrics {
 
-  val validUnits = Some(Set("NANOSECONDS", "MICROSECONDS", "MILLISECONDS", "SECONDS", "MINUTES", "HOURS", "DAYS"))
+  private val configuration = Configuration(ConfigFactory.parseResources(env.classLoader, "metrics-reference.conf")) ++ injectedConf
+  private val ValidUnits = Set("NANOSECONDS", "MICROSECONDS", "MILLISECONDS", "SECONDS", "MINUTES", "HOURS", "DAYS")
 
-  val registryName = configuration.getString("metrics.name").getOrElse("default")
-  val rateUnit = configuration.getString("metrics.rateUnit", validUnits).getOrElse("SECONDS")
-  val durationUnit = configuration.getString("metrics.durationUnit", validUnits).getOrElse("SECONDS")
-  val showSamples  = configuration.getBoolean("metrics.showSamples").getOrElse(false)
-  val jvmMetricsEnabled = configuration.getBoolean("metrics.jvm").getOrElse(true)
-  val logbackEnabled = configuration.getBoolean("metrics.logback").getOrElse(true)
+  private val registryName = configuration.get[String]("metrics.name")
+  private val rateUnit = configuration.getAndValidate[String]("metrics.rateUnit", ValidUnits)
+  private val durationUnit = configuration.getAndValidate[String]("metrics.durationUnit", ValidUnits)
+  private val showSamples = configuration.get[Boolean]("metrics.showSamples")
+  private val jvmMetricsEnabled = configuration.get[Boolean]("metrics.jvm")
+  private val logbackEnabled = configuration.get[Boolean]("metrics.logback")
 
   val mapper: ObjectMapper = new ObjectMapper()
 
@@ -56,7 +58,7 @@ class MetricsImpl @Inject() (lifecycle: ApplicationLifecycle, configuration: Con
     }
   }
 
-  def setupLogbackMetrics(registry: MetricRegistry) = {
+  def setupLogbackMetrics(registry: MetricRegistry): Unit = {
     if (logbackEnabled) {
       val appender: InstrumentedAppender = new InstrumentedAppender(registry)
 
@@ -67,7 +69,7 @@ class MetricsImpl @Inject() (lifecycle: ApplicationLifecycle, configuration: Con
     }
   }
 
-  def onStart() = {
+  def onStart(): ObjectMapper = {
 
     setupJvmMetrics(defaultRegistry)
     setupLogbackMetrics(defaultRegistry)
@@ -76,12 +78,14 @@ class MetricsImpl @Inject() (lifecycle: ApplicationLifecycle, configuration: Con
     mapper.registerModule(module)
   }
 
-  def onStop() = {
+  def onStop(): Unit = {
     SharedMetricRegistries.remove(registryName)
   }
 
   onStart()
-  lifecycle.addStopHook(() => Future.successful{ onStop() })
+  lifecycle.addStopHook(() ⇒ Future.successful {
+    onStop()
+  })
 }
 
 @Singleton

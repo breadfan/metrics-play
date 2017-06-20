@@ -6,7 +6,7 @@ This module provides some support for @codahale [Metrics](https://dropwizard.git
 [![codecov.io](http://codecov.io/github/breadfan/metrics-play/coverage.svg?branch=master)](http://codecov.io/github/AutoScout24/metrics-play?branch=master)
 [![Download](https://api.bintray.com/packages/breadfan/maven/metrics-play/images/download.svg) ](https://bintray.com/breadfan/maven/metrics-play/_latestVersion)
 
-Play Version: 2.5.4 Metrics Version: 3.1.2, Scala Version: 2.11.8
+Play Version: 2.6.0-M2 Metrics Version: 3.2.2, Scala Version: 2.12.2
 
 ## Features
 
@@ -57,17 +57,19 @@ To enable the controller add a mapping to conf/routes file
      GET     /admin/metrics              com.kenshoo.play.metrics.MetricsController.metrics
      
 #### Configuration
-Some configuration is supported through the default configuration file:
 
-    metrics.rateUnit - (default is SECONDS) 
+Override values from the (metrics-reference.conf)[src/main/resources/metrics-reference.conf] as needed in your `application.conf`:
 
-    metrics.durationUnit (default is SECONDS)
-
-    metrics.showSamples [true/false] (default is false)
-
-    metrics.jvm - [true/false] (default is true) controls reporting jvm metrics
-  
-    metrics.logback - [true/false] (default is true) controls reporing logback metrics
+```HOCON
+metrics {
+     name: "default"
+     rateUnit: "SECONDS"
+     durationUnit: "SECONDS"
+     showSamples: false
+     jvm: true # reporting jvm metrics
+     logback: true # controls reporing logback metrics 
+}
+```
 
 ### Metrics Filter
 
@@ -139,6 +141,7 @@ instead of `com.kenshoo.play.metrics.PlayModule`
 
 ## Changes
 
+* 2.6.0-M2    - Supporting Play 2.6, added Scala 2.12, abandoning Scala 2.11
 * 2.5.13      - Supporting Play 2.5, abandoning Scala 2.10
 * 2.4.0_0.4.0 - Re-implement as Play Module
 * 2.4.0_0.3.0 - Upgrade to play 2.4, metrics 3.1.2

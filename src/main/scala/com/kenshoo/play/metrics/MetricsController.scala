@@ -17,17 +17,18 @@ package com.kenshoo.play.metrics
 
 import javax.inject.Inject
 
-import play.api.mvc.{Action, Controller}
+import play.api.http.ContentTypes
+import play.api.mvc.{Action, Controller, Headers}
 
-class MetricsController @Inject() (met: Metrics) extends Controller {
+class MetricsController @Inject() (met: Metrics) extends Controller with ContentTypes {
 
   def metrics = Action {
     try {
       Ok(met.toJson)
-        .as("application/json")
-        .withHeaders("Cache-Control" -> "must-revalidate,no-cache,no-store")
+        .as(JSON)
+        .withHeaders(CACHE_CONTROL → "must-revalidate,no-cache,no-store")
     } catch {
-      case ex: MetricsDisabledException =>
+      case ex: MetricsDisabledException ⇒
         InternalServerError("metrics plugin not enabled")
     }
   }
